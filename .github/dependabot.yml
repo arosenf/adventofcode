@@ -6,16 +6,17 @@
 version: 2
 updates:
   - package-ecosystem: "maven"
-    directory: "/" # Location of package manifests
+    directory: "/2023" # Location of package manifests
     schedule:
       interval: "weekly"
     ignore:
       - dependency-name: "*"
-        update-types: ["version-update:semver-minor", "version-update:semver-patch"]
+        update-types: [ "version-update:semver-minor", "version-update:semver-patch" ]
     groups:
       maven:
         applies-to: version-updates
         patterns:
-        - "org.openrewrite*"
+          - "org.openrewrite*"
+          - "org.jetbrains.kotlin*"
         update-types:
-        - "major"
+          - "major"
