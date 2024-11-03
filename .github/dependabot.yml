@@ -6,7 +6,7 @@
 version: 2
 updates:
   - package-ecosystem: "maven"
-    directory: "/2023" # Location of package manifests
+    directory: "/aoc-2023" # Location of package manifests
     schedule:
       interval: "weekly"
     ignore:
