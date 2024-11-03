@@ -1,6 +1,6 @@
 = Advent of Code
 
-My humble solutions to https://adventofcode.com/events[Advent of Code], trying to learn:
+I try to learn a new language with every https://adventofcode.com/events[Advent of Code]:
 
-- 2023 link:2023[Kotlin]
-- 2024 link:2024[?]
+- 2023 link:aoc-2023[Kotlin]
+- 2024 link:aoc-2024[Clojure]
