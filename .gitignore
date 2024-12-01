@@ -1,4 +1,5 @@
 target/
+*.jar
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
@@ -33,3 +34,18 @@ build/
 
 ### Mac OS ###
 .DS_Store
+Thumbs.db
+
+# Leiningen
+/target/
+/classes/
+/lib/
+
+# Logs
+*.log
+/log/
+
+# REPL
+repl-history
+.nrepl-history
+.nrepl-port
