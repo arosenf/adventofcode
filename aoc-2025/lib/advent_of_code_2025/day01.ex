@@ -9,6 +9,7 @@ defmodule AdventOfCode2025.Day01 do
 
   @dial_size 100
   @dial_start 50
+  @sign %{"L" => -1, "R" => 1}
 
   @doc """
   Solve part 1 of Day 01.
@@ -37,20 +38,16 @@ defmodule AdventOfCode2025.Day01 do
       |> Enum.map(fn {d, c} -> {d, String.to_integer(c)} end)
   end
 
-  defp rotate({pos, zeroes}, [{dir, count} | tail]) when dir == "L" and rem(pos - count, 100) != 0 do
-    rotate({rem(pos - count, 100), zeroes}, tail)
-  end
+  defp rotate({pos, zeroes}, [{dir, count} | tail]) do
+    delta = @sign[dir] * count
+    new_pos = rem(pos + delta, @dial_size)
+    new_zeroes =
+      case new_pos do
+        0 -> zeroes + 1
+        _ -> zeroes
+      end
 
-  defp rotate({pos, zeroes}, [{dir, count} | tail]) when dir == "L" and rem(pos - count, 100) == 0 do
-    rotate({0, zeroes + 1}, tail)
-  end
-
-  defp rotate({pos, zeroes}, [{dir, count} | tail]) when dir == "R" and rem(pos + count, 100) != 0 do
-    rotate({rem(pos + count, @dial_size), zeroes}, tail)
-  end
-
-  defp rotate({pos, zeroes}, [{dir, count} | tail]) when dir == "R" and rem(pos + count, 100) == 0 do
-    rotate({0, zeroes + 1}, tail)
+    rotate({new_pos, new_zeroes}, tail)
   end
 
   defp rotate({pos, zeroes}, []) do
