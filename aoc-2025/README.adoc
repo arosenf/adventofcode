@@ -1,0 +1,47 @@
+= Advent of Code 2025 in Elixir
+
+This folder provides solutions for the https://adventofcode.com/2025[Advent of Code 2025] puzzles using Elixir with a test-driven development (TDD) workflow.
+The structure follows typical conventions used in Elixir projects created with `mix new`.
+
+== Project structure
+
+----
+advent_of_code_2025/
+├── lib/
+│   └── advent_of_code_2025/
+│       ├── day01.ex
+│       ├── day02.ex
+│       └── …
+├── test/
+│   ├── advent_of_code_2025/
+│   │   ├── day01_test.exs
+│   │   ├── day02_test.exs
+│   │   └── …
+│   └── test_helper.exs
+├── mix.exs
+└── README.adoc
+----
+
+Each module under `lib/advent_of_code_2025/dayXX.ex` defines two functions, `part1/1` and `part2/1`, which should return the results for the corresponding puzzle parts.
+For each day there is a matching test file under `test/advent_of_code_2025/dayXX_test.exs` with placeholder tests.
+
+== Elixir installation and getting started
+
+https://elixir-lang.org/install.html[Installation Guide]
+
+https://hexdocs.pm/elixir/introduction.html[Getting started with Elixir]
+
+Verify installation by running
+
+[source,shell]
+----
+elixir --version
+mix --version
+----
+
+== Running tests
+
+[source,shell]
+----
+mix test
+----

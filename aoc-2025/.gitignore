@@ -1,0 +1,15 @@
+/lib/*/day*.adoc
+/inputs
+
+# Elixir artifacts and tool caches
+/_build
+/deps
+/erl_crash.dump
+erl_crash.dump.*
+*.ez
+/.elixir_ls
+/.iex.exs
+/.iex_history
+/cover
+/cover/_reports
+/rel
