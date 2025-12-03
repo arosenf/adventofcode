@@ -15,24 +15,22 @@ defmodule AdventOfCode2025.Day01 do
   Solve part 1 of Day 01.
   """
   def part1(input) do
-    {_pos, count} =
-      input
-      |> Fileio.read_lines()
-      |> parse_lines()
-      |> (fn lines -> rotate({@dial_start, 0}, lines, &new_zeroes_1/3) end).()
-
-      count
+    solve(input, &new_zeroes_1/3)
   end
 
   @doc """
   Solve part 2 of Day 01.
   """
   def part2(input) do
+    solve(input, &new_zeroes_2/3)
+  end
+
+  defp solve(input, f) do
     {_pos, count} =
       input
       |> Fileio.read_lines()
       |> parse_lines()
-      |> (fn lines -> rotate({@dial_start, 0}, lines, &new_zeroes_2/3) end).()
+      |> (fn lines -> rotate({@dial_start, 0}, lines, f) end).()
 
     count
   end
