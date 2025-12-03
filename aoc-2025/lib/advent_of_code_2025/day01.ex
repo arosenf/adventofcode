@@ -19,7 +19,7 @@ defmodule AdventOfCode2025.Day01 do
       input
       |> Fileio.read_lines()
       |> parse_lines()
-      |> (fn lines -> rotate1({@dial_start, 0}, lines) end).()
+      |> (fn lines -> rotate({@dial_start, 0}, lines, &new_zeroes_1/3) end).()
 
       count
   end
@@ -32,7 +32,7 @@ defmodule AdventOfCode2025.Day01 do
       input
       |> Fileio.read_lines()
       |> parse_lines()
-      |> (fn lines -> rotate2({@dial_start, 0}, lines) end).()
+      |> (fn lines -> rotate({@dial_start, 0}, lines, &new_zeroes_2/3) end).()
 
     count
   end
@@ -43,41 +43,32 @@ defmodule AdventOfCode2025.Day01 do
       |> Enum.map(fn {d, c} -> {d, String.to_integer(c)} end)
   end
 
-  defp rotate1({pos, zeroes}, [{dir, count} | tail]) do
+  defp rotate({pos, zeroes}, [{dir, count} | tail], f) do
     delta = @sign[dir] * count
     new_pos = rem(pos + delta, @dial_size)
-    new_zeroes =
-      case new_pos do
-        0 -> zeroes + 1
-        _ -> zeroes
-      end
+    new_zeroes = zeroes + f.(pos, delta, new_pos)
 
-    rotate1({new_pos, new_zeroes}, tail)
+    rotate({new_pos, new_zeroes}, tail, f)
   end
 
-  defp rotate1({pos, zeroes}, []) do
+  defp rotate({pos, zeroes}, [], _) do
     case pos do
       0 -> {pos, zeroes + 1}
       _ -> {pos, zeroes}
     end
   end
 
-  defp rotate2({pos, zeroes}, [{dir, count} | tail]) do
-    delta = @sign[dir] * count
-    new_pos = rem(pos + delta, @dial_size)
-    new_zeroes = zeroes +
-      case {pos, pos + delta} do
-        {p, np} when (p > 0 and np <= 0) or (p < 0 and np >= 0) -> abs(div(pos + delta, @dial_size)) + 1
-        {_, _} -> abs(div(pos + delta, @dial_size))
-      end
-
-    rotate2({new_pos, new_zeroes}, tail)
+  defp new_zeroes_1(_, _, new_pos) do
+    case new_pos do
+      0 -> 1
+      _ -> 0
+    end
   end
 
-  defp rotate2({pos, zeroes}, []) do
-    case pos do
-      0 -> {pos, zeroes + 1}
-      _ -> {pos, zeroes}
+  defp new_zeroes_2(pos, delta, _) do
+    case {pos, pos + delta} do
+      {p, np} when (p > 0 and np <= 0) or (p < 0 and np >= 0) -> abs(div(pos + delta, @dial_size)) + 1
+      {_, _} -> abs(div(pos + delta, @dial_size))
     end
   end
 end
