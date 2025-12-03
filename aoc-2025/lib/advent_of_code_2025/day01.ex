@@ -19,7 +19,7 @@ defmodule AdventOfCode2025.Day01 do
       input
       |> Fileio.read_lines()
       |> parse_lines()
-      |> (fn lines -> rotate({@dial_start, 0}, lines) end).()
+      |> (fn lines -> rotate1({@dial_start, 0}, lines) end).()
 
       count
   end
@@ -27,9 +27,14 @@ defmodule AdventOfCode2025.Day01 do
   @doc """
   Solve part 2 of Day 01.
   """
-  def part2(_input) do
-    # TODO: implement the solution for part 2
-    nil
+  def part2(input) do
+    {_pos, count} =
+      input
+      |> Fileio.read_lines()
+      |> parse_lines()
+      |> (fn lines -> rotate2({@dial_start, 0}, lines) end).()
+
+    count
   end
 
   defp parse_lines(lines) when is_list(lines) do
@@ -38,7 +43,7 @@ defmodule AdventOfCode2025.Day01 do
       |> Enum.map(fn {d, c} -> {d, String.to_integer(c)} end)
   end
 
-  defp rotate({pos, zeroes}, [{dir, count} | tail]) do
+  defp rotate1({pos, zeroes}, [{dir, count} | tail]) do
     delta = @sign[dir] * count
     new_pos = rem(pos + delta, @dial_size)
     new_zeroes =
@@ -47,10 +52,29 @@ defmodule AdventOfCode2025.Day01 do
         _ -> zeroes
       end
 
-    rotate({new_pos, new_zeroes}, tail)
+    rotate1({new_pos, new_zeroes}, tail)
   end
 
-  defp rotate({pos, zeroes}, []) do
+  defp rotate1({pos, zeroes}, []) do
+    case pos do
+      0 -> {pos, zeroes + 1}
+      _ -> {pos, zeroes}
+    end
+  end
+
+  defp rotate2({pos, zeroes}, [{dir, count} | tail]) do
+    delta = @sign[dir] * count
+    new_pos = rem(pos + delta, @dial_size)
+    new_zeroes = zeroes +
+      case {pos, pos + delta} do
+        {p, np} when (p > 0 and np <= 0) or (p < 0 and np >= 0) -> abs(div(pos + delta, @dial_size)) + 1
+        {_, _} -> abs(div(pos + delta, @dial_size))
+      end
+
+    rotate2({new_pos, new_zeroes}, tail)
+  end
+
+  defp rotate2({pos, zeroes}, []) do
     case pos do
       0 -> {pos, zeroes + 1}
       _ -> {pos, zeroes}
