@@ -1,0 +1,38 @@
+name: Elixir CI with Mix
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Elixir and Erlang/OTP
+        uses: erlef/setup-beam@v1
+        with:
+          elixir-version: '1.19.4'
+          otp-version: '28'
+          rebar3-version: 'latest'
+
+      - name: Install dependencies
+        run: mix deps.get
+        working-directory: ./aoc-2025
+
+      - name: Compile
+        run: mix compile --warnings-as-errors
+        working-directory: ./aoc-2025
+
+       # We cannot run the tests because we cannot commit the input files needed for that
+#      - name: Run tests
+#        run: mix test
+#        working-directory: ./aoc-2025
