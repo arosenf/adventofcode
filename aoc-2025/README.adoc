@@ -45,3 +45,10 @@ mix --version
 ----
 mix test
 ----
+
+== Running interactive session
+
+[source,shell]
+----
+iex -S mix
+----
