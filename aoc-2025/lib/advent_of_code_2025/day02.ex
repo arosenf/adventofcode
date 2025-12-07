@@ -28,6 +28,31 @@ defmodule AdventOfCode2025.Day02 do
     lines
     |> Enum.flat_map(fn line -> String.split(line, ",") end)
     |> Enum.map(fn interval -> String.split(interval, "-") end)
-    |> Enum.map(fn [from, to] -> {String.to_integer(from), String.to_integer(to)} end)
+    |> Enum.map(fn [from, to] -> String.to_integer(from)..String.to_integer(to) end)
+    |> Enum.map(fn range -> Enum.reduce(range, 0, fn id, acc -> id_value(id, acc) end) end)
+    |> Enum.sum()
+  end
+
+  # Properties of the IDs we are looking for:
+  #   - Cannot start with 0
+  #   - Must be of even length
+  #   - After splitting in half, both halves must be equal
+  defp id_value(id, acc) when is_integer(id) do
+    candidate = Integer.to_string(id)
+
+    cond do
+      String.starts_with?(candidate, "0") ->
+        acc
+
+      rem(String.length(candidate), 2) == 1 ->
+        acc
+
+      String.split_at(candidate, div(String.length(candidate), 2))
+      |> (fn {first_half, second_half} -> first_half != second_half end).() ->
+        acc
+
+      true ->
+        id + acc
+    end
   end
 end
