@@ -6,7 +6,7 @@ defmodule AdventOfCode2025.Day02Test do
 
   @example_input "day02_example.txt"
   @example_output_part1 1227775554
-  @example_output_part2 0
+  @example_output_part2 4174379265
   @input "day02_input.txt"
 
   describe "part1/2" do

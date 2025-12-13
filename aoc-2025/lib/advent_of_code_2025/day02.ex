@@ -11,17 +11,21 @@ defmodule AdventOfCode2025.Day02 do
   Solve part 1 of Day 02.
   """
   def part1(input) do
-    input
-    |> Fileio.read_lines()
-    |> parse_lines()
+    solve(input, &id_value_1/2)
   end
 
   @doc """
   Solve part 2 of Day 02.
   """
-  def part2(_input) do
-    # TODO: implement the solution for part 2
-    nil
+  def part2(input) do
+    solve(input, &id_value_2/2)
+  end
+
+  defp solve(input, f) do
+    input
+    |> Fileio.read_lines()
+    |> parse_lines()
+    |> (fn ids -> evaluate_ids(ids, f) end).()
   end
 
   defp parse_lines(lines) when is_list(lines) do
@@ -29,7 +33,11 @@ defmodule AdventOfCode2025.Day02 do
     |> Enum.flat_map(fn line -> String.split(line, ",") end)
     |> Enum.map(fn interval -> String.split(interval, "-") end)
     |> Enum.map(fn [from, to] -> String.to_integer(from)..String.to_integer(to) end)
-    |> Enum.map(fn range -> Enum.reduce(range, 0, fn id, acc -> id_value(id, acc) end) end)
+  end
+
+  defp evaluate_ids(range, f) do
+    range
+    |> Enum.map(fn range -> Enum.reduce(range, 0, fn id, acc -> f.(id, acc) end) end)
     |> Enum.sum()
   end
 
@@ -37,7 +45,7 @@ defmodule AdventOfCode2025.Day02 do
   #   - Cannot start with 0
   #   - Must be of even length
   #   - After splitting in half, both halves must be equal
-  defp id_value(id, acc) when is_integer(id) do
+  defp id_value_1(id, acc) when is_integer(id) do
     candidate = Integer.to_string(id)
 
     cond do
@@ -54,5 +62,26 @@ defmodule AdventOfCode2025.Day02 do
       true ->
         id + acc
     end
+  end
+
+  # Count all strings which consist of only repeated substrings
+  defp id_value_2(id, acc) when is_integer(id) do
+    candidate = Integer.to_string(id)
+    max_prefix_len = div(String.length(candidate), 2)
+
+    generate_prefixes(candidate, max_prefix_len)
+      |> Enum.any?(fn prefix ->
+        reps = div(String.length(candidate), String.length(prefix))
+        expected = String.duplicate(prefix, reps)
+        expected == candidate
+      end)
+      |> case do
+        true -> id + acc
+        false -> acc
+      end
+  end
+
+  defp generate_prefixes(candidate, max_prefix_len) do
+    Enum.map(1..max_prefix_len//1, fn len -> String.slice(candidate, 0, len) end)
   end
 end
