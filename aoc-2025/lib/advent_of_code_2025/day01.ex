@@ -36,9 +36,9 @@ defmodule AdventOfCode2025.Day01 do
   end
 
   defp parse_lines(lines) when is_list(lines) do
-      lines
-      |> Enum.map(fn line -> String.split_at(line, 1) end)
-      |> Enum.map(fn {d, c} -> {d, String.to_integer(c)} end)
+    lines
+    |> Enum.map(fn line -> String.split_at(line, 1) end)
+    |> Enum.map(fn {d, c} -> {d, String.to_integer(c)} end)
   end
 
   defp rotate({pos, zeroes}, [{dir, count} | tail], f) do
@@ -65,8 +65,11 @@ defmodule AdventOfCode2025.Day01 do
 
   defp new_zeroes_2(pos, delta, _) do
     case {pos, pos + delta} do
-      {p, np} when (p > 0 and np <= 0) or (p < 0 and np >= 0) -> abs(div(pos + delta, @dial_size)) + 1
-      {_, _} -> abs(div(pos + delta, @dial_size))
+      {p, np} when (p > 0 and np <= 0) or (p < 0 and np >= 0) ->
+        abs(div(pos + delta, @dial_size)) + 1
+
+      {_, _} ->
+        abs(div(pos + delta, @dial_size))
     end
   end
 end

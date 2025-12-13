@@ -69,19 +69,16 @@ defmodule AdventOfCode2025.Day02 do
     candidate = Integer.to_string(id)
     max_prefix_len = div(String.length(candidate), 2)
 
-    generate_prefixes(candidate, max_prefix_len)
-      |> Enum.any?(fn prefix ->
-        reps = div(String.length(candidate), String.length(prefix))
-        expected = String.duplicate(prefix, reps)
-        expected == candidate
-      end)
-      |> case do
-        true -> id + acc
-        false -> acc
-      end
-  end
-
-  defp generate_prefixes(candidate, max_prefix_len) do
-    Enum.map(1..max_prefix_len//1, fn len -> String.slice(candidate, 0, len) end)
+    Enum.any?(1..max_prefix_len//1, fn prefix_len ->
+      candidate
+      |> String.to_charlist()
+      |> Enum.chunk_every(prefix_len)
+      |> Enum.uniq()
+      |> length() == 1
+    end)
+    |> case do
+      true -> id + acc
+      false -> acc
+    end
   end
 end

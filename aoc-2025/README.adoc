@@ -52,3 +52,10 @@ mix test
 ----
 iex -S mix
 ----
+
+== Benchmarking
+
+[source,shell]
+----
+MIX_ENV=dev mix profile.eprof -e 'AdventOfCode2025.Day02.part2("day02_input.txt")'
+----
